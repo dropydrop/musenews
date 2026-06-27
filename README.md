@@ -1,2 +1,3 @@
 # musenews
-résumé l'actualité par IA
+
+Résumer l'actualité par IA
