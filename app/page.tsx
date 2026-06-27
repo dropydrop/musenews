@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Loader2, RefreshCw, Sparkles, Trash2 } from 'lucide-react';
 
-export default function XFree() {
+export default function MuseNews() {
   const [trends, setTrends] = useState('Chargement des trends...');
   const [rawInput, setRawInput] = useState('');
   const [result, setResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showTrends, setShowTrends] = useState(false); // ← Nouveau
 
   const TODAY = new Date().toLocaleDateString('fr-FR');
   const RATE_LIMIT_MS = 3600000;
@@ -77,18 +78,30 @@ export default function XFree() {
           <p className="text-xl text-gray-400 mt-2">L'actualité sarcastique • {TODAY}</p>
         </header>
 
+        {/* Section Tendances améliorée */}
         <section className="bg-gray-900 p-6 rounded-2xl border border-gray-800">
-          <h2 className="text-xl font-bold mb-4">📈 Tendances France</h2>
-          <pre className="whitespace-pre-wrap text-sm text-gray-300 bg-black/50 p-5 rounded-xl font-mono">
-            {trends}
-          </pre>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold">📈 Tendances France</h2>
+            <button
+              onClick={() => setShowTrends(!showTrends)}
+              className="text-sm px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl transition-colors"
+            >
+              {showTrends ? 'Masquer' : 'Afficher les trends'}
+            </button>
+          </div>
+          
+          {showTrends && (
+            <pre className="whitespace-pre-wrap text-sm text-gray-300 bg-black/50 p-5 rounded-xl font-mono leading-relaxed border border-gray-700">
+              {trends}
+            </pre>
+          )}
         </section>
 
         <section className="space-y-6">
           <textarea
             value={rawInput}
             onChange={(e) => setRawInput(e.target.value)}
-            placeholder="Saisir ici un texte sur des news/trends..."
+            placeholder="Colle ici le texte brut (trends + news du jour)..."
             className="w-full h-40 p-5 rounded-2xl bg-gray-900 border border-gray-700 focus:border-gray-500 text-gray-200 resize-none"
           />
 

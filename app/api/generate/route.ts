@@ -15,10 +15,10 @@ Texte brut : ${rawInput}
 Règles strictes :
 - Commence par : "Bonsoir à tous, voilà le buzz France des dernières XXh qui a tout fait péter sur X ! 🔥"
 - Style pote décontracté français sarcastique (ouais, putain, ça part en couille, vannes naturelles)
-- Structure : Top 1-2 + highlights variés + WTF du jour + punchline finale
-- Markdown + emojis
-- Liens cliquables [texte](https://x.com/...)
-- Longueur max ~500 mots
+- Structure générale : Top de l'actualité brulante + highlights variés + WTF du jour + punchline finale de conclusion. Structure claire avec beaucoup d'aération : sauts de ligne entre chaque idée, paragraphes courts
+- Mets les liens de tweets en Markdown cliquables : [description](https://x.com/...)
+- Utilise des sauts de ligne pour séparer les sections
+- Longueur max ~650 mots
 - Réponds UNIQUEMENT avec le résumé final.`;
 
     const mistralRes = await fetch("https://api.mistral.ai/v1/chat/completions", {
