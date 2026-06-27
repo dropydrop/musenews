@@ -12,14 +12,23 @@ export async function POST(request: Request) {
 
 Texte brut : ${rawInput}
 
-Règles strictes :
-- Commence par : "Bonsoir à tous, voilà le buzz France des dernières XXh qui a tout fait péter sur X ! 🔥"
-- Style pote décontracté français sarcastique (ouais, putain, ça part en couille, vannes naturelles)
-- Structure générale : Top de l'actualité brulante + highlights variés + WTF du jour + punchline finale de conclusion. Structure claire avec beaucoup d'aération : sauts de ligne entre chaque idée et paragraphe, paragraphes courts
-- Mets les liens de tweets en Markdown cliquables : [description](https://x.com/...)
-- Utilise des sauts de ligne pour séparer les sections
-- Longueur max ~650 mots
-- Réponds UNIQUEMENT avec le résumé final.`;
+RÈGLES STRICTES DE FORMATAGE (très important) :
+
+- Commence exactement par : "Bonsoir à tous, voici les news en France dernièrement qui ont tout fait péter sur X ! 🔥"
+- Style pote sarcastique français décontracté (ouais, putain, ça part en couille, etc.)
+- **Beaucoup d'aération** : un saut de ligne entre chaque phrase importante, paragraphes courts (max 5-6 lignes)
+- Utilise des sauts de ligne doubles entre les grandes sections
+- Mets des --- seulement quand c'est une vraie séparation forte
+- Liens en Markdown : [texte descriptif](https://x.com/...)
+- Structure idéale :
+  1. Intro punchy
+  2. Top 1-2-3
+  3. Highlights (4-5 points avec emojis)
+  4. WTF du jour
+  5. Punchline finale + question
+- Longueur max ~750 mots
+
+Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
 
     const mistralRes = await fetch("https://api.mistral.ai/v1/chat/completions", {
       method: "POST",
