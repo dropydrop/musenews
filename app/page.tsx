@@ -74,7 +74,7 @@ export default function XFree() {
       <div className="max-w-4xl mx-auto space-y-10">
         <header className="text-center">
           <h1 className="text-5xl font-black tracking-tighter">🔥 MuseNews</h1>
-          <p className="text-xl text-gray-400 mt-2">Buzz France sarcastique • {TODAY}</p>
+          <p className="text-xl text-gray-400 mt-2">L'actualité sarcastique • {TODAY}</p>
         </header>
 
         <section className="bg-gray-900 p-6 rounded-2xl border border-gray-800">
@@ -88,7 +88,7 @@ export default function XFree() {
           <textarea
             value={rawInput}
             onChange={(e) => setRawInput(e.target.value)}
-            placeholder="Colle ici le texte brut des news/trends..."
+            placeholder="Saisir ici un texte sur des news/trends..."
             className="w-full h-40 p-5 rounded-2xl bg-gray-900 border border-gray-700 focus:border-gray-500 text-gray-200 resize-none"
           />
 
