@@ -14,40 +14,6 @@ Texte brut : ${rawInput}
 
 Règles strictes :
 - Commence par : "Bonsoir à tous, voilà le buzz France des dernières XXh qui a tout fait péter sur X ! 🔥"
-- Style pote décontracté français sarcastique (ou**✅ Compris parfaitement !** On change **complètement** pour Mistral (plus de Groq).
-
----
-
-### 1. Change d'abord la variable d'environnement
-
-Dans **Vercel → Settings → Environment Variables** :
-
-- Supprime `GROQ_API_KEY`
-- Ajoute cette nouvelle variable :
-  - **Key** : `MISTRAL_API_KEY`
-  - **Value** : ta clé Mistral API
-
----
-
-### 2. Remplace tout le fichier `app/api/generate/route.ts` par ceci :
-
-```ts
-import { NextResponse } from 'next/server';
-
-export async function POST(request: Request) {
-  try {
-    const { rawInput } = await request.json();
-
-    if (!rawInput?.trim()) {
-      return NextResponse.json({ error: "Insère d'abord du texte !" }, { status: 400 });
-    }
-
-    const prompt = `Reprends ce résumé brut de buzz France X (dernières 24h/48h selon contexte).
-
-Texte brut : ${rawInput}
-
-Règles strictes :
-- Commence par : "Bonsoir à tous, voilà le buzz France des dernières XXh qui a tout fait péter sur X ! 🔥"
 - Style pote décontracté français sarcastique (ouais, putain, ça part en couille, vannes naturelles)
 - Structure : Top 1-2 + highlights variés + WTF du jour + punchline finale
 - Markdown + emojis
@@ -62,7 +28,7 @@ Règles strictes :
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "mistral-small-latest",     // ou "ministral-8b-latest"
+        model: "mistral-small-latest",
         temperature: 0.85,
         max_tokens: 1400,
         messages: [
