@@ -15,7 +15,7 @@ Texte brut : ${rawInput}
 Règles strictes :
 - Commence par : "Bonsoir à tous, voilà le buzz France des dernières XXh qui a tout fait péter sur X ! 🔥"
 - Style pote décontracté français sarcastique (ouais, putain, ça part en couille, vannes naturelles)
-- Structure générale : Top de l'actualité brulante + highlights variés + WTF du jour + punchline finale de conclusion. Structure claire avec beaucoup d'aération : sauts de ligne entre chaque idée, paragraphes courts
+- Structure générale : Top de l'actualité brulante + highlights variés + WTF du jour + punchline finale de conclusion. Structure claire avec beaucoup d'aération : sauts de ligne entre chaque idée et paragraphe, paragraphes courts
 - Mets les liens de tweets en Markdown cliquables : [description](https://x.com/...)
 - Utilise des sauts de ligne pour séparer les sections
 - Longueur max ~650 mots
