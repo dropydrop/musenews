@@ -130,10 +130,17 @@ export default function MuseNews() {
         </section>
 
         {result && (
-          <section className="bg-gray-900 p-8 rounded-3xl border border-gray-800 prose prose-invert max-w-none">
-            <h3 className="text-2xl font-bold mb-6">Résultat final ⬇️</h3>
-            <div className="leading-relaxed text-gray-200 prose-invert">
-              <ReactMarkdown>{result}</ReactMarkdown>
+          <section className="bg-gray-900 p-8 rounded-3xl border border-gray-800">
+            <h3 className="text-2xl font-bold mb-6">Résumé IA ⬇️</h3>
+            <div className="text-gray-200 leading-relaxed whitespace-pre-wrap break-words prose prose-invert max-w-none">
+              <ReactMarkdown
+                components={{
+                  p: ({ children }) => <p className="mb-5 last:mb-0">{children}</p>, 
+                  ul: ({ children }) => <ul className="mb-5 space-y-2">{children}</ul>,
+                }}
+              >
+                {result}
+              </ReactMarkdown>
             </div>
           </section>
         )}
