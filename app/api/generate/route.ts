@@ -14,7 +14,7 @@ Texte brut : ${rawInput}
 
 RÈGLES STRICTES DE FORMATAGE (très important) :
 
-- Commence exactement par : "Bonsoir à tous, voici les news en France dernièrement qui ont tout fait péter sur X ! 🔥"
+- Commence exactement par : "Bonsoir à tous, voici le coeur de l'actualité récente en France ! 🔥"
 - Style pote sarcastique français décontracté (ouais, putain, ça part en couille, etc.)
 - **Beaucoup d'aération** : un saut de ligne entre chaque phrase importante, paragraphes courts (max 5-6 lignes)
 - Utilise des sauts de ligne doubles entre les grandes sections
