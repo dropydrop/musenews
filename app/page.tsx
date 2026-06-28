@@ -21,12 +21,9 @@ export default function MuseNews() {
       .then(data => setTrends(data.trends))
       .catch(() => setTrends('Erreur de chargement des trends.'));
 
-    const cached = localStorage.getItem('xfree_cache');
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      if (parsed.date === TODAY) setResult(parsed.summary);
-    }
-  }, [TODAY]);
+    const savedSummary = localStorage.getItem('lastSummary');
+    if (savedSummary) setResult(savedSummary);
+  }, []);
 
   const handleGenerate = async (isRegeneration = false) => {
     if (!rawInput.trim()) return setError("Insère d'abord du texte !");
@@ -52,9 +49,9 @@ export default function MuseNews() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
 
-      setResult(data.result);
+      setResult(data.summary);
       localStorage.setItem('xfree_last_call', Date.now().toString());
-      localStorage.setItem('xfree_cache', JSON.stringify({ date: TODAY, summary: data.result }));
+      localStorage.setItem('lastSummary', data.summary);
     } catch (err: any) {
       setError(`Erreur : ${err.message}`);
     } finally {
@@ -66,7 +63,7 @@ export default function MuseNews() {
     setRawInput('');
     setResult(null);
     setError(null);
-    localStorage.removeItem('xfree_cache');
+    localStorage.removeItem('lastSummary');
     localStorage.removeItem('xfree_last_call');
   };
 

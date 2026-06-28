@@ -56,7 +56,7 @@ Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
       throw new Error(data.error?.message || `Mistral error: ${mistralRes.status}`);
     }
 
-    return NextResponse.json({ result: data.choices[0].message.content });
+    return NextResponse.json({ success: true, summary: data.choices[0].message.content });
   } catch (error: any) {
     console.error("Mistral API Error:", error);
     return NextResponse.json({ 
