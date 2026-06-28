@@ -136,8 +136,8 @@ export default function MuseNews() {
               <ReactMarkdown
                 components={{
                   p: (props) => <p className="mb-2 last:mb-0" {...props} />,
-                  ul: (props) => <ul className="mb-2 space-y-2" {...props} />,
-                  hr: () => <hr className="my-6 border-gray-700" />,
+                  ul: (props) => <ul className="mb-2 space-y-1" {...props} />,
+                  hr: () => <hr className="my-3 border-gray-700" />,
                 }}
               >
                 {result}
