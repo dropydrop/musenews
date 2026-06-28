@@ -71,7 +71,7 @@ export default function MuseNews() {
     <main className="min-h-screen bg-gray-950 text-gray-100 p-6 md:p-12">
       <div className="max-w-4xl mx-auto space-y-10">
         <header className="text-center">
-          <h1 className="text-4xl font-black tracking-tighter">🔥 MuseNews</h1>
+          <h1 className="text-4xl font-black tracking-tighter">MuseNews</h1>
           <p className="text-xl text-gray-400 mt-2">L'actualité sarcastique • {TODAY}</p>
         </header>
 
