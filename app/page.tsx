@@ -135,8 +135,8 @@ export default function MuseNews() {
             <div className="text-gray-200 leading-relaxed whitespace-pre-wrap break-words">
               <ReactMarkdown
                 components={{
-                  p: (props) => <p className="mb-4 last:mb-0" {...props} />,
-                  ul: (props) => <ul className="mb-4 space-y-2" {...props} />,
+                  p: (props) => <p className="mb-2 last:mb-0" {...props} />,
+                  ul: (props) => <ul className="mb-2 space-y-2" {...props} />,
                   hr: () => <hr className="my-6 border-gray-700" />,
                 }}
               >
