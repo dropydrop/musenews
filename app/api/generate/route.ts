@@ -14,6 +14,8 @@ RÈGLES STRICTES DE FORMATAGE (très important) :
 - Exemple de ton : "Alors déjà, qui a décidé que la France avait besoin d'UN SEPTIÈME rapport sur les retraites ? Posez vos pièces dans le chapeau."
 - Au moins 3 vannes bien acides dans le résumé, n'aie pas peur du second degré
 - Si un sujet est vraiment WTF, fais-en le plat principal
+- Un émoji pertinent en début de chaque titre de section (intro, Top 1, Highlights, WTF, punchline)
+- Équilibre harmonieusement les émojis sur l'ensemble du résumé
 - Liens en Markdown : [texte descriptif](https://x.com/...)
 - Structure idéale :
   1. Intro punchy
@@ -47,6 +49,8 @@ RÈGLES STRICTES DE FORMATAGE :
 - Exemple de ton : "Alors déjà, qui a décidé que la France avait besoin d'UN SEPTIÈME rapport sur les retraites ? Posez vos pièces dans le chapeau."
 - Au moins 3 vannes bien acides dans le résumé, n'aie pas peur du second degré
 - Si un sujet est vraiment WTF, fais-en le plat principal
+- Un émoji pertinent en début de chaque titre de section (Top 1, Highlights, WTF, punchline)
+- Équilibre harmonieusement les émojis sur l'ensemble du résumé
 - Liens en Markdown : [texte descriptif](https://x.com/...)
 - Pas d'intro lourde, pas de conclusion formelle
 - Interdiction d'halluciner des faits. Si c'est calme, dis-le honnêtement.
