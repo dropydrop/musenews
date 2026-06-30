@@ -26,8 +26,6 @@ export default function MuseNews() {
   }, []);
 
   const handleGenerate = async (isRegeneration = false) => {
-    if (!rawInput.trim()) return setError("Insère d'abord du texte !");
-
     if (!isRegeneration) {
       const lastCall = localStorage.getItem('xfree_last_call');
       if (lastCall && Date.now() - parseInt(lastCall) < RATE_LIMIT_MS) {
