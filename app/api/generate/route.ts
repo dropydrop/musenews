@@ -21,6 +21,8 @@ RÈGLES STRICTES DE FORMATAGE (très important) :
 - **aération** : un retour a la ligne entre chaque phrase importante, paragraphes courts (max 5-6 lignes)
 - Utilise des --- et des sauts de ligne entre chaque grandes sections pour une vraie séparation
 - Longueur max ~750 mots
+- Si le texte brut contient des liens X, conserve-les avec leur texte descriptif
+- Formate : [voir sur X](https://x.com/...)
 
 Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
 
@@ -50,6 +52,9 @@ RÈGLES STRICTES DE FORMATAGE :
 - **aération** : un retour à la ligne entre chaque phrase importante, paragraphes courts (max 5-6 lignes)
 - Utilise des --- et des sauts de ligne entre chaque grande section
 - Longueur max ~750 mots
+- Varie les sources citées dans le résumé (ne pas se focaliser sur 2-3 mêmes sites)
+- Si des liens X sont présents dans les données, inclus-les en Markdown : [voir le post](https://x.com/...)
+- Les sources X sont un complément qui ancre l'information, pas une source prioritaire
 
 Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
 
@@ -78,15 +83,19 @@ async function callMistral(userPrompt: string) {
 
 async function searchTavily(): Promise<string> {
   const queries = [
-    "actualité France politique polémique réseaux sociaux",
-    "tech France innovation IA start-up polémique",
-    "culture web France influenceurs tendances viral",
-    "fait divers insolite France viral réseaux sociaux"
+    "actualité France politique société économie débats",
+    "tech France innovation IA start-up intelligence artificielle",
+    "culture web France influenceurs tendances réseaux sociaux",
+    "fait divers insolite France viral buzz"
   ];
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20000);
 
   const results = await Promise.all(
     queries.map(q =>
       fetch("https://api.tavily.com/search", {
+        signal: controller.signal,
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -94,11 +103,13 @@ async function searchTavily(): Promise<string> {
           query: q,
           search_depth: "advanced",
           max_results: 5,
-          include_domains: ["lemonde.fr", "liberation.fr", "lefigaro.fr", "bfmtv.com", "france24.com", "x.com"]
+          include_domains: ["lemonde.fr", "liberation.fr", "lefigaro.fr", "bfmtv.com", "france24.com", "francetvinfo.fr", "20minutes.fr", "legorafi.fr", "x.com", "reddit.com"]
         })
       }).then(r => r.json())
     )
   );
+
+  clearTimeout(timeout);
 
   const seen = new Set<string>();
   const items = results
