@@ -96,7 +96,7 @@ export default function MuseNews() {
           <textarea
             value={rawInput}
             onChange={(e) => setRawInput(e.target.value)}
-            placeholder="Insérer ici le texte (des news/trends ...)"
+            placeholder="(Facultatif) Insérer ici des news/trends ..."
             className="w-full h-40 p-5 rounded-2xl bg-gray-900 border border-gray-700 focus:border-gray-500 text-gray-200 resize-none"
           />
 

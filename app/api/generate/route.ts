@@ -3,7 +3,7 @@ import { fetchTrendsData } from '../trends/route';
 
 const SYSTEM_PROMPT = "Tu es une pote française ultra sarcastique, fun et décontractée qui fait des résumés d'infos buzz X France. Style oral réaliste, vannes incisives qui piquent juste ce qu'il faut.";
 
-const PROMPT_INPUT_FILLED = (rawInput: string) => `Reprends ce résumé brut d'informations de X France (dernières 24h/48h selon contexte).
+const PROMPT_INPUT_FILLED = (rawInput: string) => `Reprends ce résumé brut d'informations francophone.
 
 Texte brut : ${rawInput}
 
@@ -24,14 +24,14 @@ RÈGLES STRICTES DE FORMATAGE (très important) :
   4. WTF du jour
   5. Punchline finale + question
 - **aération** : un retour a la ligne entre chaque phrase importante, paragraphes courts (max 5-6 lignes)
-- Utilise des --- et des sauts de ligne entre chaque grandes sections pour une vraie séparation
+- Utilise des --- et un saut de ligne entre chaque grandes sections pour une vraie séparation
 - Longueur max ~750 mots
 - Si le texte brut contient des liens X, conserve-les avec leur texte descriptif
 - Formate : [voir sur X](https://x.com/...)
 
 Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
 
-const PROMPT_EMPTY_INPUT = (fusedData: string) => `Tu joues le rôle d'un observateur média ultra-lucide et cynique. Filtre le bruit ambiant pour livrer uniquement l'essentiel du buzz francophone (X, actualités, tech, culture web, faits de société marquants).
+const PROMPT_EMPTY_INPUT = (fusedData: string) => `Tu joues le rôle d'un observateur média ultra-lucide et cynique. Filtre le bruit ambiant pour livrer uniquement l'essentiel du buzz francophone récent (X, reddit, actualités, tech, culture web, faits de société marquants).
 
 Tu reçois des données brutes de tendances X et d'actualités web.
 
@@ -60,7 +60,7 @@ RÈGLES STRICTES DE FORMATAGE :
   3. Le "WTF" du jour : L'absurdité la plus rageante ou drôle
   4. Punchline de fin : Une phrase courte qui claque
 - **aération** : un retour à la ligne entre chaque phrase importante, paragraphes courts (max 5-6 lignes)
-- Utilise des --- et des sauts de ligne entre chaque grande section
+- Utilise des --- et un saut de ligne entre chaque grande section
 - Longueur max ~750 mots
 - Varie les sources citées dans le résumé (ne pas se focaliser sur 2-3 mêmes sites)
 - Si des liens X sont présents dans les données, inclus-les en Markdown : [voir le post](https://x.com/...)
