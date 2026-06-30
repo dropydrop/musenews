@@ -11,6 +11,9 @@ RÈGLES STRICTES DE FORMATAGE (très important) :
 
 - Commence exactement par : "Bonsoir à tous, voici le coeur de l'actualité récente en France ! 🔥"
 - Style pote sarcastique français décontracté (ouais, putain, ça part en couille, etc.)
+- Exemple de ton : "Alors déjà, qui a décidé que la France avait besoin d'UN SEPTIÈME rapport sur les retraites ? Posez vos pièces dans le chapeau."
+- Au moins 3 vannes bien acides dans le résumé, n'aie pas peur du second degré
+- Si un sujet est vraiment WTF, fais-en le plat principal
 - Liens en Markdown : [texte descriptif](https://x.com/...)
 - Structure idéale :
   1. Intro punchy
@@ -41,6 +44,9 @@ Consignes de sélection :
 RÈGLES STRICTES DE FORMATAGE :
 - Commence exactement par : "Bonsoir à tous, voici le coeur de l'actualité récente en France ! 🔥"
 - Style pote sarcastique français décontracté, incisif, sans politesses répétitives. Utilise l'argot français naturel.
+- Exemple de ton : "Alors déjà, qui a décidé que la France avait besoin d'UN SEPTIÈME rapport sur les retraites ? Posez vos pièces dans le chapeau."
+- Au moins 3 vannes bien acides dans le résumé, n'aie pas peur du second degré
+- Si un sujet est vraiment WTF, fais-en le plat principal
 - Liens en Markdown : [texte descriptif](https://x.com/...)
 - Pas d'intro lourde, pas de conclusion formelle
 - Interdiction d'halluciner des faits. Si c'est calme, dis-le honnêtement.
@@ -67,7 +73,7 @@ async function callMistral(userPrompt: string) {
     },
     body: JSON.stringify({
       model: "mistral-small-latest",
-      temperature: 0.85,
+      temperature: 0.9,
       max_tokens: 1400,
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
@@ -141,7 +147,7 @@ export async function POST(request: Request) {
       fetchTrendsData().catch(() => 'Aucune tendance disponible.')
     ]);
 
-    const fusedData = `=== TENDANCES X (dernières 24h) ===\n${trendsContent}\n\n=== ACTUALITÉS DE LA SEMAINE ===\n${tavilyContent}`;
+    const fusedData = `=== TENDANCES X (dernières 24h) ===\n${trendsContent}\n\n=== ACTUALITÉS DE LA SEMAINE ===\n${tavilyContent}\n\nNote : cherche ce qui est absurde, scandaleux ou drôle dans ces données. C'est ça le focus.`;
 
     const summary = await callMistral(PROMPT_EMPTY_INPUT(fusedData));
     return NextResponse.json({ success: true, summary });
