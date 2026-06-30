@@ -8,7 +8,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Insère d'abord du texte !" }, { status: 400 });
     }
 
-    const prompt = `Reprends ce résumé brut de buzz France X (dernières 24h/48h selon contexte).
+    const prompt = `Reprends ce résumé brut d'informations de X France (dernières 24h/48h selon contexte).
 
 Texte brut : ${rawInput}
 
@@ -16,9 +16,6 @@ RÈGLES STRICTES DE FORMATAGE (très important) :
 
 - Commence exactement par : "Bonsoir à tous, voici le coeur de l'actualité récente en France ! 🔥"
 - Style pote sarcastique français décontracté (ouais, putain, ça part en couille, etc.)
-- **Beaucoup d'aération** : un saut de ligne entre chaque phrase importante, paragraphes courts (max 5-6 lignes)
-- Utilise des sauts de ligne doubles entre les grandes sections
-- Mets des --- seulement quand c'est une vraie séparation forte
 - Liens en Markdown : [texte descriptif](https://x.com/...)
 - Structure idéale :
   1. Intro punchy
@@ -26,6 +23,8 @@ RÈGLES STRICTES DE FORMATAGE (très important) :
   3. Highlights (4-5 points avec emojis)
   4. WTF du jour
   5. Punchline finale + question
+- **aération** : un retour a la ligne entre chaque phrase importante, paragraphes courts (max 5-6 lignes)
+- Utilise des --- et des sauts de ligne entre chaque grandes sections pour une vraie séparation
 - Longueur max ~750 mots
 
 Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
@@ -43,7 +42,7 @@ Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
         messages: [
           { 
             role: "system", 
-            content: "Tu es une pote française ultra sarcastique, fun et décontractée qui fait des résumés buzz X France. Style oral réaliste, vannes incisives qui piquent juste ce qu'il faut." 
+            content: "Tu es une pote française ultra sarcastique, fun et décontractée qui fait des résumés d'infos buzz X France. Style oral réaliste, vannes incisives qui piquent juste ce qu'il faut." 
           },
           { role: "user", content: prompt }
         ]
