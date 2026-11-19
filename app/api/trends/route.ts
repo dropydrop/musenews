@@ -15,9 +15,9 @@ export async function fetchTrendsData(): Promise<string> {
   const $ = cheerio.load(html);
   const trends = new Set<string>();
 
-  $('.trend-card__list li, .trend-name').each((_, el) => {
+  $('a.trend-link').each((_, el) => {
     const name = $(el).text().trim();
-    if (name && !name.includes('ago') && name.length > 1) {
+    if (name && name.length > 1) {
       trends.add(name);
     }
   });

@@ -76,7 +76,7 @@ async function callMistral(userPrompt: string) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "mistral-small-latest",
+      model: "ministral-8b-latest",
       temperature: 0.9,
       max_tokens: 1400,
       messages: [
