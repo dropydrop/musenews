@@ -50,16 +50,18 @@ Données collectées (tendances X/Google + revue de presse web/RSS) :
 ${fusedData}
 
 RÈGLES D'OR DE FIABILITÉ FACTUELLE (CRITIQUE) :
-1. MATIÈRE FACTUELLE STRICTEMENT VÉRIFIÉE :
+1. MATIÈRE FACTUELLE STRICTEMENT RESPECTÉE :
    - Les faits réels, personnes, dates, lieux et événements racontés DOIVENT provenir exclusivement des données fournies.
+   - DISTINCTION FAITS ÉTABLIS VS AFFIRMATIONS RAPPORTÉES : La présence d'une information dans un extrait ne signifie pas qu'elle est prouvée ou établie. Distingue rigoureusement un fait avéré d'une accusation, d'une rumeur, d'une hypothèse ou d'une déclaration personnelle. Conserve les précautions et nuances présentes dans les sources.
+   - Ne transforme JAMAIS une accusation ou un soupçon en culpabilité établie, ni une rumeur en fait confirmé. Attribue clairement les affirmations lorsqu'elles proviennent d'une personne ou d'une source spécifique (ex. « X est accusé de manipulation par plusieurs collaborateurs » et JAMAIS « X manipulait ses collaborateurs »).
    - INTERDICTION FORMELLE d'inventer des citations, déclarations, faux tweets ou commentaires d'internautes ("Les internautes s'insurgent...", "Selon un utilisateur X...", "La toile dénonce...").
    - Ne prétends JAMAIS que « les réseaux sociaux ont explosé », que « tout le monde en parle » ou que « les internautes adorent » sans élément concret présent dans les sources.
    - N'invente aucun détail biographique, contexte imaginaire ou motivation secrète pour rendre l'histoire plus spectaculaire.
-   - Ne transforme jamais une hypothèse ou une rumeur en fait établi.
-   - Si un sujet dispose de peu de détails vérifiés, reste volontairement succinct et percutant, ou choisis un autre sujet mieux documenté.
+   - Si un sujet dispose de peu de détails concrets, reste volontairement succinct et percutant, ou choisis un autre sujet mieux documenté.
 
 2. BRODERIE HUMORISTIQUE LIBRE ET TOTALE (TON STYLE) :
    - Ton humour, ton sarcasme, tes métaphores absurdes, tes vannes et tes punchlines restent 100% libres !
+   - Cette prudence factuelle ne doit en AUCUN CAS affadir ton ton satirique, piquant, provocateur et caricatural. Tu restes totalement libre d'ironiser sur les accusations, de chambrer les déclarations ou de vanner l'absurdité des situations, tant que tu ne modifies pas leur degré de certitude.
    - Exemple AUTORISÉ (humour sur fait réel) : « Ce canard a visiblement plus de discipline militaire que la moitié des états-majors européens. »
    - Exemple STRICTEMENT INTERDIT (fausse matière factuelle) : « Les internautes ont dénoncé une provocation militaire sur TikTok. » (si aucune source ne rapporte cette réaction).
    - En résumé : moque-toi des faits réels, chambre, exagère sur le plan satirique, mais ne fabrique JAMAIS de fausses informations ni de fausses réactions.
@@ -448,14 +450,14 @@ function balanceCandidates(
   return selected.slice(0, maxTotal);
 }
 
-// Mise en forme textuelle pour Ministral avec distinction explicite du contexte vérifié
+// Mise en forme textuelle pour Ministral avec distinction explicite du contexte fourni par la source
 function formatCandidatesForPrompt(articles: CandidateArticle[]): string {
   if (!articles.length) return "Aucune actualité web récente trouvée.";
 
   return articles.map(item => {
     const isSubstantial = hasSubstantialSnippet(item);
     const snippetPart = isSubstantial 
-      ? `\n  Contexte vérifié : ${item.snippet}` 
+      ? `\n  Contexte fourni par la source : ${item.snippet}` 
       : (item.snippet ? `\n  Détail : ${item.snippet}` : '');
     const linkPart = item.url ? ` (${item.url})` : '';
     return `- [${item.source}] ${item.title}${linkPart}${snippetPart}`;
