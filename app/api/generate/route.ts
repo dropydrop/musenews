@@ -43,45 +43,48 @@ RÈGLES STRICTES DE FORMATAGE (très important) :
 
 Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
 
-const PROMPT_EMPTY_INPUT = (fusedData: string) => `Tu joues le rôle d'un observateur média et culture web ultra-lucide, sec et cynique.
-Ton but : extraire la substantifique moelle de ce qui fait parler sur les réseaux francophones et le web aujourd'hui.
+const PROMPT_EMPTY_INPUT = (fusedData: string) => `Tu joues le rôle d'un observateur média et culture web ultra-lucide, sec, ironique et cynique.
+Ton but : livrer une revue satirique et percutante de ce qui fait parler en France et sur le web.
 
 Données collectées (tendances X/Google + revue de presse web/RSS) :
 ${fusedData}
 
-ENCADREMENT STRICT DES TENDANCES :
-- Les "Tendances X / Google" listées ci-dessus sont des signaux bruts et des mots-clés de recherche, PAS des faits vérifiés.
-- INTERDICTION FORMELLE d'inventer la raison de la popularité d'une tendance si celle-ci n'est pas expliquée dans les articles web fournis.
-- Une tendance isolée NE SUFFIT PAS à construire un sujet : elle doit être corroborée par des faits tangibles issus des articles collectés.
-- Si une tendance n'est pas corroborée ou expliquée par les articles fournis, IGNORE-LA purement et simplement.
+RÈGLES D'OR DE FIABILITÉ FACTUELLE (CRITIQUE) :
+1. MATIÈRE FACTUELLE STRICTEMENT VÉRIFIÉE :
+   - Les faits réels, personnes, dates, lieux et événements racontés DOIVENT provenir exclusivement des données fournies.
+   - INTERDICTION FORMELLE d'inventer des citations, déclarations, faux tweets ou commentaires d'internautes ("Les internautes s'insurgent...", "Selon un utilisateur X...", "La toile dénonce...").
+   - Ne prétends JAMAIS que « les réseaux sociaux ont explosé », que « tout le monde en parle » ou que « les internautes adorent » sans élément concret présent dans les sources.
+   - N'invente aucun détail biographique, contexte imaginaire ou motivation secrète pour rendre l'histoire plus spectaculaire.
+   - Ne transforme jamais une hypothèse ou une rumeur en fait établi.
+   - Si un sujet dispose de peu de détails vérifiés, reste volontairement succinct et percutant, ou choisis un autre sujet mieux documenté.
 
-CRITÈRES STRICTS DE SÉLECTION ÉDITORIALE :
-- À ÉCARTER TOTALEMENT :
-  * La politique politicienne institutionnelle de routine (débats d'appareil, commissions, budget austère)
-  * Les résultats sportifs ordinaires
-  * L'économie macro-économique d'entreprise conventionnelle
-  * Les faits divers sordides ou morbides sans intérêt sociétal
+2. BRODERIE HUMORISTIQUE LIBRE ET TOTALE (TON STYLE) :
+   - Ton humour, ton sarcasme, tes métaphores absurdes, tes vannes et tes punchlines restent 100% libres !
+   - Exemple AUTORISÉ (humour sur fait réel) : « Ce canard a visiblement plus de discipline militaire que la moitié des états-majors européens. »
+   - Exemple STRICTEMENT INTERDIT (fausse matière factuelle) : « Les internautes ont dénoncé une provocation militaire sur TikTok. » (si aucune source ne rapporte cette réaction).
+   - En résumé : moque-toi des faits réels, chambre, exagère sur le plan satirique, mais ne fabrique JAMAIS de fausses informations ni de fausses réactions.
 
-- À PRIVILÉGIER ABSOLUMENT :
-  * Culture Internet, mèmes, dérives d'influenceurs, streamers, dramas et phénomènes numériques
-  * Controverses et polémiques absurdes sur les réseaux sociaux (ce qui a fait réagir ou clasher)
-  * Comportements collectifs bizarres, tendances insolites et faits révélateurs de l'époque
-  * Les vrais moments de WTF et d'absurde
+ENCADREMENT DES TENDANCES BRUTES :
+- Les "Tendances X / Google" sont des mots-clés de recherche, PAS des faits vérifiés.
+- Ne tente jamais de deviner ou d'inventer la raison d'une tendance : aborde-la UNIQUEMENT si un article fourni en explique la cause. Sinon, ignore-la.
+
+CRITÈRES DE SÉLECTION ÉDITORIALE :
+- À ÉCARTER : La politique politicienne d'appareil (commissions, motions, déclarations ministérielles de routine), l'économie d'entreprise austère, les scores sportifs ordinaires, les faits divers sordides sans portée culturelle.
+- À PRIVILÉGIER : Culture Internet, mèmes, dramas d'influenceurs et streamers, polémiques numériques insolites, comportements collectifs bizarres, controverses absurdes et moments de pur WTF.
 
 RÈGLES DE FORMATAGE :
 - Commence exactement par : "Bonsoir à tous, voici le coeur de l'actualité récente en France ! 🔥"
-- Style : pote sarcastique français décontracté, incisif, piquant mais lucide. Pas de politesse académique.
-- Sélectionne 4 à 5 sujets phares maximum parmi les données fournies.
-- Structure idéale :
-  1. Top 1 : L'info ou la polémique qui fait le plus de bruit ou de drama. Résumé + vanne bien acide.
-  2. Highlights (3-4 points marquants) : Les autres pépites web/société avec emojis pertinents en titre.
+- Style : pote sarcastique français décontracté, incisif, piquant, sans politesses académiques.
+- Sélectionne 4 à 5 sujets phares parmi les données fournies.
+- Structure :
+  1. Top 1 : L'info ou la polémique majeure. Résumé factuel + vanne acide.
+  2. Highlights (3-4 points marquants) : Autres pépites web/société avec emojis pertinents en titre.
   3. Le "WTF" du jour : L'absurdité la plus frappante ou lunaire.
   4. Punchline finale : Une phrase courte qui claque + une question ouverte piquante.
 - Longueur cible : environ 750 mots.
-- IMPÉRATIF DE COMPLÉTUDE : Le résumé doit impérativement être mené à son terme complet. Toutes les rubriques (Top 1, Highlights, WTF, Punchline finale avec question) doivent être rédigées jusqu'au bout. Si nécessaire, condense légèrement les développements intermédiaires pour garantir que le texte ne soit jamais interrompu au milieu d'une phrase.
+- IMPÉRATIF DE COMPLÉTUDE : Mène impérativement le résumé à son terme (toutes les sections et la punchline finale doivent être terminées sans coupure). Si besoin, condense légèrement les développements intermédiaires.
 - Liens en Markdown si disponibles dans les données (ex: [source](url)).
 - Aération : retours à la ligne fréquents, paragraphes courts (max 4-5 lignes), séparateurs --- entre grandes sections.
-- Reste fidèle aux faits : n'invente rien qui ne figure pas dans les données.
 
 Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
 
@@ -353,7 +356,30 @@ async function fetchSpecializedRSS(): Promise<{ nextink: CandidateArticle[]; asi
   }
 }
 
-// Équilibrage et dédoublonnage fin avec quotas cibles
+// Détecte si un article contient un contexte factuel substantiel (non vide, non générique, distinct du titre)
+function hasSubstantialSnippet(item: CandidateArticle): boolean {
+  if (!item.snippet) return false;
+  const s = item.snippet.trim().toLowerCase();
+  if (s.startsWith('actualité récente relayée') || s.startsWith("article d'investigation")) return false;
+  
+  const normTitle = normalizeTitle(item.title);
+  const normSnippet = normalizeTitle(item.snippet);
+
+  // Si le snippet est trop court ou identique au titre
+  if (normSnippet.length < 35 || normSnippet === normTitle) return false;
+
+  // Si le snippet ne fait que répéter le titre avec quelques mots résiduels (ex: nom du média sans séparateur)
+  if (normSnippet.startsWith(normTitle) && (normSnippet.length - normTitle.length < 30)) {
+    return false;
+  }
+  if (normTitle.startsWith(normSnippet) && (normTitle.length - normSnippet.length < 30)) {
+    return false;
+  }
+
+  return true;
+}
+
+// Équilibrage et dédoublonnage fin avec quotas cibles et priorisation de la substance factuelle
 // Tavily (6), Google News (6), Next.ink (4), Arrêt sur Images (4) -> Max 20 au total
 function balanceCandidates(
   groups: {
@@ -394,11 +420,16 @@ function balanceCandidates(
 
   const remainingPool: CandidateArticle[] = [];
 
-  // Phase 1 : Remplissage des quotas cibles pour chaque source
+  // Phase 1 : Remplissage des quotas cibles pour chaque source (priorise les articles avec contexte riche)
   for (const [key, quota] of Object.entries(targetQuotas) as [keyof typeof groups, number][]) {
-    const items = groups[key] || [];
-    let count = 0;
+    // Trie en favorisant les articles ayant une véritable matière factuelle
+    const items = [...(groups[key] || [])].sort((a, b) => {
+      const aScore = hasSubstantialSnippet(a) ? 1 : 0;
+      const bScore = hasSubstantialSnippet(b) ? 1 : 0;
+      return bScore - aScore;
+    });
 
+    let count = 0;
     for (const item of items) {
       if (count < quota) {
         if (tryAdd(item)) count++;
@@ -417,12 +448,15 @@ function balanceCandidates(
   return selected.slice(0, maxTotal);
 }
 
-// Mise en forme textuelle pour Ministral
+// Mise en forme textuelle pour Ministral avec distinction explicite du contexte vérifié
 function formatCandidatesForPrompt(articles: CandidateArticle[]): string {
   if (!articles.length) return "Aucune actualité web récente trouvée.";
 
   return articles.map(item => {
-    const snippetPart = item.snippet ? `\n  Détail : ${item.snippet}` : '';
+    const isSubstantial = hasSubstantialSnippet(item);
+    const snippetPart = isSubstantial 
+      ? `\n  Contexte vérifié : ${item.snippet}` 
+      : (item.snippet ? `\n  Détail : ${item.snippet}` : '');
     const linkPart = item.url ? ` (${item.url})` : '';
     return `- [${item.source}] ${item.title}${linkPart}${snippetPart}`;
   }).join('\n\n');
