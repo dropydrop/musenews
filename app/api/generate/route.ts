@@ -83,10 +83,13 @@ RÈGLES DE FORMATAGE :
 
 Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
 
-// Appel Mistral avec AbortController explicite (timeout 10s) et température paramétrable
-async function callMistral(userPrompt: string, temperature = 0.9): Promise<string> {
+// Appel Mistral avec AbortController explicite (timeout paramétrable, défaut 20s) et température paramétrable
+async function callMistral(userPrompt: string, temperature = 0.9, timeoutMs = 20000): Promise<string> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10000);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  const startMistral = Date.now();
+  console.log(`[generate] Appel Mistral démarré (temp: ${temperature}, max_tokens: 1400, timeout: ${timeoutMs / 1000}s)...`);
 
   try {
     const res = await fetch("https://api.mistral.ai/v1/chat/completions", {
@@ -107,14 +110,21 @@ async function callMistral(userPrompt: string, temperature = 0.9): Promise<strin
       })
     });
 
-    clearTimeout(timeout);
+    clearTimeout(timer);
+    const mistralDuration = Date.now() - startMistral;
+
     const data = await res.json();
     if (!res.ok) throw new Error(data.error?.message || `Mistral error: ${res.status}`);
-    return data.choices[0].message.content;
+
+    const content = data.choices[0].message.content;
+    console.log(`[generate] Réponse Mistral reçue en ${mistralDuration}ms (taille: ${content.length} car)`);
+    return content;
   } catch (err: any) {
-    clearTimeout(timeout);
+    clearTimeout(timer);
+    const elapsed = Date.now() - startMistral;
     if (err.name === 'AbortError') {
-      throw new Error("Délai de réponse dépassé pour la génération IA (timeout 10s).");
+      console.error(`[generate] Timeout Mistral après ${elapsed}ms (seuil: ${timeoutMs}ms)`);
+      throw new Error(`Délai de réponse dépassé pour la génération IA (timeout ${timeoutMs / 1000}s - écoulé: ${elapsed}ms).`);
     }
     throw err;
   }
@@ -398,23 +408,29 @@ function formatCandidatesForPrompt(articles: CandidateArticle[]): string {
 }
 
 export async function POST(request: Request) {
+  const totalStart = Date.now();
+
   try {
     const { rawInput } = await request.json();
     const input = rawInput?.trim();
 
-    // 1. MODE MANUEL (Strictement isolé, température restaurée à 0.9)
+    // 1. MODE MANUEL (Strictement isolé, température restaurée à 0.9, timeout 20s)
     if (input) {
-      const summary = await callMistral(PROMPT_INPUT_FILLED(input), 0.9);
+      console.log(`[generate] Mode manuel déclenché (${input.length} car)`);
+      const summary = await callMistral(PROMPT_INPUT_FILLED(input), 0.9, 20000);
       return NextResponse.json({ success: true, summary });
     }
 
     // 2. MODE AUTOMATIQUE : Collecte parallèle multi-sources (Promise.allSettled)
+    console.log(`[generate] Mode automatique : démarrage de la collecte parallèle...`);
+    const collectStart = Date.now();
     const [trendsRes, tavilyRes, gnewsRes, specRes] = await Promise.allSettled([
       fetchTrendsData(),
       searchTavily(),
       fetchGoogleNewsRSS(),
       fetchSpecializedRSS()
     ]);
+    const collectDuration = Date.now() - collectStart;
 
     const trendsContent = trendsRes.status === 'fulfilled' ? trendsRes.value : 'Aucune tendance disponible.';
 
@@ -426,6 +442,7 @@ export async function POST(request: Request) {
     };
 
     const totalArticlesCollected = groups.tavily.length + groups.gnews.length + groups.nextink.length + groups.asi.length;
+    console.log(`[generate] Collecte terminée en ${collectDuration}ms : ${totalArticlesCollected} articles collectés (Tavily: ${groups.tavily.length}, GNews: ${groups.gnews.length}, NextInk: ${groups.nextink.length}, ASI: ${groups.asi.length})`);
 
     // RÈGLE DE GARDE : Si aucune actualité exploitable n'est récupérée, ne pas appeler le LLM
     if (totalArticlesCollected === 0) {
@@ -435,8 +452,11 @@ export async function POST(request: Request) {
     }
 
     // Sélection équilibrée avec redistribution des quotas (max 20)
+    const normStart = Date.now();
     const balancedArticles = balanceCandidates(groups, 20);
     const formattedArticles = formatCandidatesForPrompt(balancedArticles);
+    const normDuration = Date.now() - normStart;
+    console.log(`[generate] Sélection équilibrée en ${normDuration}ms : ${balancedArticles.length} articles retenus`);
 
     const fusedData = `=== TENDANCES X / GOOGLE EN FRANCE (dernières 24h) ===
 ${trendsContent}
@@ -446,12 +466,20 @@ ${formattedArticles}
 
 Note éditoriale : Ne commente pas la politique classique ennuyeuse. Concentre-toi sur ce qui agite Internet, les polémiques numériques, les absurdités et les dramas croustillants.`;
 
-    // Appel Mistral en mode automatique (température 0.85)
-    const summary = await callMistral(PROMPT_EMPTY_INPUT(fusedData), 0.85);
+    const fullPrompt = PROMPT_EMPTY_INPUT(fusedData);
+    const estimatedTokens = Math.round((SYSTEM_PROMPT.length + fullPrompt.length) / 3.5);
+    console.log(`[generate] Prompt préparé : ${fullPrompt.length} car (~${estimatedTokens} tokens estimés)`);
+
+    // Appel Mistral en mode automatique (température 0.85, timeout sécurisé 20s)
+    const summary = await callMistral(fullPrompt, 0.85, 20000);
+    const totalDuration = Date.now() - totalStart;
+    console.log(`[generate] Génération terminée avec succès en ${totalDuration}ms au total.`);
+
     return NextResponse.json({ success: true, summary });
 
   } catch (error: any) {
-    console.error("Generate API Error:", error);
+    const totalDuration = Date.now() - totalStart;
+    console.error(`[generate] Erreur API après ${totalDuration}ms:`, error.message);
     return NextResponse.json({ 
       error: error.message || "Erreur lors de la génération du résumé" 
     }, { status: 500 });
