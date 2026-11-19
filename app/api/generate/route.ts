@@ -77,19 +77,26 @@ RÈGLES DE FORMATAGE :
   2. Highlights (3-4 points marquants) : Les autres pépites web/société avec emojis pertinents en titre.
   3. Le "WTF" du jour : L'absurdité la plus frappante ou lunaire.
   4. Punchline finale : Une phrase courte qui claque + une question ouverte piquante.
+- Longueur cible : environ 750 mots.
+- IMPÉRATIF DE COMPLÉTUDE : Le résumé doit impérativement être mené à son terme complet. Toutes les rubriques (Top 1, Highlights, WTF, Punchline finale avec question) doivent être rédigées jusqu'au bout. Si nécessaire, condense légèrement les développements intermédiaires pour garantir que le texte ne soit jamais interrompu au milieu d'une phrase.
 - Liens en Markdown si disponibles dans les données (ex: [source](url)).
 - Aération : retours à la ligne fréquents, paragraphes courts (max 4-5 lignes), séparateurs --- entre grandes sections.
 - Reste fidèle aux faits : n'invente rien qui ne figure pas dans les données.
 
 Réponds UNIQUEMENT avec le texte du résumé, rien d'autre.`;
 
-// Appel Mistral avec AbortController explicite (timeout paramétrable, défaut 20s) et température paramétrable
-async function callMistral(userPrompt: string, temperature = 0.9, timeoutMs = 20000): Promise<string> {
+// Appel Mistral avec AbortController explicite et paramètres configurables
+async function callMistral(
+  userPrompt: string, 
+  temperature = 0.9, 
+  timeoutMs = 20000,
+  maxTokens = 1400
+): Promise<string> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   const startMistral = Date.now();
-  console.log(`[generate] Appel Mistral démarré (temp: ${temperature}, max_tokens: 1400, timeout: ${timeoutMs / 1000}s)...`);
+  console.log(`[generate] Appel Mistral démarré (temp: ${temperature}, max_tokens: ${maxTokens}, timeout: ${timeoutMs / 1000}s)...`);
 
   try {
     const res = await fetch("https://api.mistral.ai/v1/chat/completions", {
@@ -102,7 +109,7 @@ async function callMistral(userPrompt: string, temperature = 0.9, timeoutMs = 20
       body: JSON.stringify({
         model: "ministral-8b-latest",
         temperature,
-        max_tokens: 1400,
+        max_tokens: maxTokens,
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: userPrompt }
@@ -113,11 +120,25 @@ async function callMistral(userPrompt: string, temperature = 0.9, timeoutMs = 20
     clearTimeout(timer);
     const mistralDuration = Date.now() - startMistral;
 
-    const data = await res.json();
+    const data: any = await res.json();
     if (!res.ok) throw new Error(data.error?.message || `Mistral error: ${res.status}`);
 
-    const content = data.choices[0].message.content;
-    console.log(`[generate] Réponse Mistral reçue en ${mistralDuration}ms (taille: ${content.length} car)`);
+    const choice = data.choices?.[0];
+    const content = choice?.message?.content || '';
+    const finishReason = choice?.finish_reason || 'non_specifie';
+    const usage = data.usage;
+
+    console.log(`[generate] Réponse Mistral reçue en ${mistralDuration}ms :
+  - Taille : ${content.length} car
+  - Finish reason : ${finishReason}
+  - Prompt tokens : ${usage?.prompt_tokens ?? 'N/A'}
+  - Completion tokens : ${usage?.completion_tokens ?? 'N/A'}
+  - Total tokens : ${usage?.total_tokens ?? 'N/A'}`);
+
+    if (finishReason === 'length') {
+      console.warn(`[generate] ATTENTION: La réponse a été tronquée par le plafond max_tokens (${maxTokens} tokens atteints).`);
+    }
+
     return content;
   } catch (err: any) {
     clearTimeout(timer);
@@ -414,10 +435,10 @@ export async function POST(request: Request) {
     const { rawInput } = await request.json();
     const input = rawInput?.trim();
 
-    // 1. MODE MANUEL (Strictement isolé, température restaurée à 0.9, timeout 20s)
+    // 1. MODE MANUEL (Strictement isolé, température restaurée à 0.9, timeout 20s, max_tokens 1400)
     if (input) {
       console.log(`[generate] Mode manuel déclenché (${input.length} car)`);
-      const summary = await callMistral(PROMPT_INPUT_FILLED(input), 0.9, 20000);
+      const summary = await callMistral(PROMPT_INPUT_FILLED(input), 0.9, 20000, 1400);
       return NextResponse.json({ success: true, summary });
     }
 
@@ -470,8 +491,8 @@ Note éditoriale : Ne commente pas la politique classique ennuyeuse. Concentre-t
     const estimatedTokens = Math.round((SYSTEM_PROMPT.length + fullPrompt.length) / 3.5);
     console.log(`[generate] Prompt préparé : ${fullPrompt.length} car (~${estimatedTokens} tokens estimés)`);
 
-    // Appel Mistral en mode automatique (température 0.85, timeout sécurisé 20s)
-    const summary = await callMistral(fullPrompt, 0.85, 20000);
+    // Appel Mistral en mode automatique (température 0.85, timeout sécurisé 23s, max_tokens 1800)
+    const summary = await callMistral(fullPrompt, 0.85, 23000, 1800);
     const totalDuration = Date.now() - totalStart;
     console.log(`[generate] Génération terminée avec succès en ${totalDuration}ms au total.`);
 
